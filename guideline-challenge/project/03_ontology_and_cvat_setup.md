@@ -36,8 +36,14 @@ placeholder mới là xong (gate G2).
 
 ## Setup test
 
-Một thành viên **chưa tham gia setup** mở task và trả lời: label gì, dùng tool nào, gán attribute nào, khi nào
-escalate. Ghi lại ai test và chỗ họ vấp:
-
-TODO — thực hiện sau khi task calibration được tạo trong CVAT (mục "3 · CVAT setup + sample pack" của README,
-phút 80–110).
+Một thành viên `Nguyễn Văn Thịnh` mở task và trả lời: 
+- label `drivable_area`
+- dùng Polygon tool
+- gán attribute `needs_review` cho polygon
+- khi nào escalate : 
+  - Một polygon: bật needs_review=true nếu ranh giới mờ/khuất, hoặc không chắc vùng đó là mặt đường hay vùng cần loại trừ. Ví dụ: phản chiếu che vạch thật, mép đường xa không rõ.
+  - Cả ảnh: gắn tag image_escalate nếu gần như không thể xác định được vùng lái an toàn nào để vẽ, chẳng hạn tuyết hoặc bóng tối che phần lớn cảnh.
+Ghi lại ai test và chỗ họ vấp:
+- Tester: Nguyễn Văn Thịnh (chưa tham gia setup).
+- Kết quả: Xác định được `drivable_area`, Polygon tool, `needs_review` và cách escalate.
+- Chỗ vấp: Không có.
