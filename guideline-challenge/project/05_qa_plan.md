@@ -58,19 +58,79 @@ Nhóm được đổi mapping nếu downstream contract khác, nhưng phải gi�
 
 | Metric | Cách tính | Vì sao phù hợp với bài toán |
 |---|---|---|
-| TODO | TODO | TODO |
+| Critical Defect Rate | Critical defects / reviewed images | Theo dõi lỗi nghiêm trọng của drivable-area annotatio |
+| Major Defect Rate | Major defects / reviewed images | Đo lỗi geometry/coverage đáng kể |
+| Minor Defect Rate | Minor defects / reviewed images | Theo dõi consistency của boundary |
+| Image Defect Rate | images with ≥1 defect / reviewed images | Đo tỷ lệ ảnh cần rework |
+| Rework Rate | images requiring rework / production images | Đo chi phí QA |
+| Guideline Gap Rate | Question issues / reviewed images | Phát hiện rule chưa đủ rõ |
+| Critical Escape Rate | Critical defects found after gate / total Critical defects | Theo dõi Critical defect lọt qua QA |
 
-Metric high-risk tách riêng (ví dụ critical defect escape rate): TODO
+Metric high-risk tách riêng (ví dụ critical defect escape rate): High-risk Critical Defect Rate = Critical defects in high-risk samples / Total high-risk samples reviewed
+
+Threshold:
+High-risk Critical Defect Rate = 0%
+High-risk samples phải được review 100%.
 
 ## Quality gate
 
 Threshold là đề xuất của nhóm, không phải chuẩn ngành. Giải thích trade-off cost/risk.
 
-```text
 PASS if:
-  TODO
-REWORK if: TODO
-REJECT / ESCALATE if: TODO
-```
 
-Trade-off: TODO
+- Critical Defect Rate = 0%
+- Critical Defect Escape Rate = 0%
+- Major Defect Rate ≤ 5%
+- Minor Defect Rate ≤ 10%
+- High-risk Critical Defect Rate = 0%
+- 100% high-risk samples đã được review
+- Không còn issue OPEN hoặc REWORK
+- Không còn Question ảnh hưởng đến annotation chưa được resolve
+- Annotation sử dụng đúng guideline version của batch
+
+REWORK if:
+
+- Critical Defect Rate > 0%
+- Major Defect Rate > 5%
+- Minor Defect Rate > 10%
+- Có high-risk sample chưa được review
+- Có issue OPEN / REWORK
+- Có guideline gap ảnh hưởng đến annotation
+- Annotation không khớp guideline version
+
+Action khi REWORK
+
+1. Xác định defect.
+2. Sửa annotation.
+3. Nếu lỗi có tính hệ thống → review 100% batch.
+4. Nếu nguyên nhân là guideline gap → update guideline + version.
+5. Calibration lại nếu rule thay đổi.
+6. Chạy lại QA.
+7. Chạy lại Quality Gate.
+
+REJECT / ESCALATE if:
+
+- Critical defect vẫn còn sau rework.
+- Critical defect lặp lại qua ≥2 vòng QA.
+- Cùng lỗi xuất hiện có tính hệ thống trên nhiều batch.
+- Guideline mâu thuẫn với downstream contract.
+- Không thể resolve ambiguity bằng escalation path.
+- Thay đổi geometry/output contract làm annotation hiện tại không còn hợp lệ.
+
+Batch bị REJECT / ESCALATE không được đưa vào downstream dataset cho đến khi vấn đề được giải quyết.
+
+Trade-off
+
+Nhóm không review 100% toàn bộ production vì chi phí QA tăng theo số lượng ảnh. Thay vào đó: "20% random sampling + 100% high-risk sampling" để cân bằng giữa QA cost và risk of bad annotations.
+
+- Random sampling giúp sample không bị thiên lệch về các ảnh mà reviewer chủ động chọn.
+- Risk-based sampling tập trung nguồn lực vào các ảnh có boundary drivable khó.
+- Critical threshold bằng 0% vì Critical defect có thể làm sai hoàn toàn downstream meaning.
+- Major/Minor có threshold cao hơn để tránh việc QA phải review lại toàn bộ dataset chỉ vì những sai lệch nhỏ.
+- Khi vượt threshold, chi phí review/rework tăng nhưng giảm rủi ro đưa annotation lỗi vào downstream dataset.
+
+Decision
+
+- PASS → Batch đạt Quality Gate và được đưa vào downstream dataset.
+- REWORK → Batch bị giữ lại, sửa annotation và chạy lại QA + Quality Gate.
+- REJECT / ESCALATE → Batch bị chặn khỏi downstream dataset cho đến khi defect hoặc specification issue được giải quyết.
