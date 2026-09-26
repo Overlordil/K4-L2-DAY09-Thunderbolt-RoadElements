@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "name": "drivable_area",
+    "color": "#2E7D32",
+    "type": "polygon",
+    "attributes": [
+      {
+        "name": "needs_review",
+        "mutable": false,
+        "input_type": "checkbox",
+        "default_value": "false",
+        "values": ["false"]
+      }
+    ]
+  },
+  {
+    "name": "image_escalate",
+    "color": "#8E24AA",
+    "type": "tag",
+    "attributes": []
+  }
+]

@@ -7,23 +7,37 @@ placeholder mới là xong (gate G2).
 
 | Name | Geometry | Type (class / attribute) | Allowed values | Default | Mutable? | Rationale |
 |---|---|---|---|---|---|---|
-| TODO | TODO | TODO | TODO | TODO | TODO | TODO |
+| `drivable_area` | polygon | class | — (object type) | — | false | Mọi mặt đường lái được hợp pháp thuộc tuyến ego. Chỉ 1 class duy nhất — theo đúng quy ước gốc của BDD100K, vùng không lái được đơn giản là không có polygon, không cần class loại trừ riêng |
+| `needs_review` (attribute của `drivable_area`) | — | attribute (checkbox) | `false` | `false` | false | Escalation object-level khi ranh giới polygon không chắc |
+| `image_escalate` | tag | class (tag cho cả ảnh) | — | — | false | Escalation cả ảnh khi không xác định được vùng lái an toàn |
 
 ## Class hay attribute
 
-TODO — vì sao mỗi thứ là class hay attribute (xem README mục "2 · Viết guideline"). Default nào có thể gây bias khi
-annotator quên đổi?
+- `drivable_area` là **một class duy nhất**: downstream (free-space/tránh chướng ngại) chỉ cần biết "lái được hay
+  không", không cần phân biệt loại vùng loại trừ (bike lane/parking/gore...) ở bước annotation này.
+- Không có class hay attribute riêng cho vùng loại trừ: **absence of polygon = không lái được**, đúng theo cách
+  BDD100K gốc công bố drivable area (chỉ 1 class, phần còn lại của ảnh mặc định không phải drivable). Danh sách cụ
+  thể vùng nào bị loại (gore, bike lane, làn đậu xe, lối vào tư nhân, đảo giao thông, lề đường) nằm ở
+  `02_guideline.md` mục 5 dưới dạng rule văn bản, annotator tuân theo khi quyết định có vẽ polygon hay không.
+- `needs_review` là **attribute** (không phải class hay tag riêng) vì nó là cờ tạm gắn lên một polygon cụ thể đã
+  vẽ, không đổi ý nghĩa hình học/class của polygon đó.
+- **Đánh đổi đã chấp nhận:** vì không có label loại trừ riêng, export không phân biệt được "annotator cố tình
+  không vẽ vùng X" với "annotator quên vẽ X". Nhóm chấp nhận rủi ro này để đổi lấy schema đơn giản, đúng chuẩn
+  gốc; `needs_review`/`image_escalate` là van an toàn cho case annotator không chắc, còn case rõ ràng loại trừ
+  (bike lane, gore...) dựa vào rule văn bản + calibration để phát hiện lệch.
 
 ## CVAT
 
-- **Phiên bản CVAT** (`make cvat-status`): TODO
-- **Tên task calibration** (có version guideline, ví dụ `team07-calib-v1`): TODO
-- **Guide của task đã dán `02_guideline.md`?** TODO (có / chưa)
-- **Nhóm dùng Track hay Shape, vì sao:** TODO
+- **Phiên bản CVAT** (`make cvat-status`): TODO — điền sau khi bật CVAT và chạy lệnh.
+- **Tên task calibration** (ví dụ `thunderbolt-calib-v1`): TODO — điền khi tạo task thật trong CVAT.
+- **Guide của task đã dán `02_guideline.md`?** TODO (có / chưa) — dán theo GUIDE mục 2.3 sau khi tạo task.
+- **Nhóm dùng Track hay Shape, vì sao:** Shape — task dùng ảnh tĩnh BDD100K, không có chuỗi frame liên tục nên
+  không áp dụng Track (xem mục 8 `02_guideline.md`).
 
 ## Setup test
 
 Một thành viên **chưa tham gia setup** mở task và trả lời: label gì, dùng tool nào, gán attribute nào, khi nào
 escalate. Ghi lại ai test và chỗ họ vấp:
 
-TODO
+TODO — thực hiện sau khi task calibration được tạo trong CVAT (mục "3 · CVAT setup + sample pack" của README,
+phút 80–110).
