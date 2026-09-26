@@ -1,6 +1,6 @@
 # Annotation guideline — Drivable area trên ảnh BDD100K
 
-**Version:** v1
+**Version:** v2
 
 ## 1. Objective + scope
 
@@ -27,6 +27,11 @@ vật cản.
   thấy, trừ ngoại lệ mục 6 (occlusion tạm thời do xe/người di chuyển).
 - **Tolerance:** lệch ≤ 5 px mỗi cạnh so với vạch/mép đường ở ảnh gốc 1280×720.
 - Polygon chạm mép ảnh: đóng thẳng theo cạnh khung hình, không tự khép kín bên trong ảnh.
+- **Mật độ điểm (v2):** dọc theo đoạn cong hoặc quanh mép bất định hình (mép lề đường gấp khúc, quanh chướng ngại
+  vật), đặt điểm cách nhau tối đa ~40 px (ảnh gốc 1280×720) để polygon bám sát ranh giới thực tế — không dùng quá
+  ít điểm khiến polygon "cắt góc" qua đoạn cong. Đoạn thẳng dài không cần thêm điểm giữa. Xem ví dụ BDD17 (mục 9).
+- **Góc ranh giới hẹp/nhỏ (v2):** ví dụ khe hẹp giữa hai xe đậu, hoặc mép vỉa hè lấn sát vào làn đường — vẫn đặt
+  điểm bám theo đúng tolerance ở trên, không làm tròn hoặc bỏ qua góc hẹp cho polygon "gọn".
 
 ## 4. Taxonomy
 
@@ -51,6 +56,9 @@ nằm ở mục 5 dưới dạng rule văn bản. `needs_review` là attribute v
 - **Bắt buộc label** (`drivable_area`): mọi mặt đường trải nhựa/bê tông còn nhìn thấy trong hành lang tuyến
   đường ego, kể cả phần bị xe/người đang di chuyển che tạm thời (mục 6), kể cả vạch qua đường/vạch dừng nằm trên
   mặt đường đó (không tách polygon riêng cho vạch qua đường).
+- **Vùng mặt đường ngay trước đầu xe (v2):** phần foreground gần cạnh dưới khung hình (thường bị méo phối cảnh
+  ống kính góc rộng) vẫn tính là `drivable_area` như phần đường phía xa — vẽ đủ polygon tới sát mép dưới khung
+  hình, không cắt bớt vì méo hình hoặc vì "quá gần xe". Xem ví dụ BDD20 (mục 9).
 - **Không vẽ gì cả (ngoài scope, kể cả khi trông giống mặt đường):** trời, nhà cửa, vỉa hè không nối liền mặt
   đường, biển báo, phương tiện, người đi bộ, **và các vùng loại trừ dù trải nhựa/bê tông**: gore/chevron gần exit
   ramp, bike lane có vạch/ký hiệu riêng, làn đậu xe có vạch riêng, lối vào bãi đỗ/tư nhân, đảo giao thông, lề
@@ -100,7 +108,9 @@ Không áp dụng — task ảnh tĩnh, không dùng Track.
 | BDD05 | Highway nhiều làn, xe thưa, làn rõ ràng | `drivable_area` bao trùm mọi làn cùng chiều còn nhìn thấy | Mục 3, mục 4 |
 | BDD10 | Đường 2 chiều không dải phân cách, xe đậu 2 bên, có xe ngược chiều đang tới | `drivable_area` bao gồm cả làn ego lẫn làn ngược chiều còn nhìn thấy; không vẽ vào làn đậu xe | Mục 4, mục 5 |
 | BDD11 | Ngã tư khu dân cư, vạch qua đường ngay trước xe, người đi bộ ở góc phải | `drivable_area` bao trùm cả phần vạch qua đường, không tách polygon riêng cho vạch qua đường | Mục 5, mục 6 |
-| BDD20 | Khu dân cư, có cọc tiêu và một làn kẻ vạch riêng bên phải | Không vẽ polygon ở làn kẻ vạch riêng đó (IGNORE); `drivable_area` các làn còn lại | Mục 4, mục 5 |
+| BDD20 | Khu dân cư, có cọc tiêu và một làn kẻ vạch riêng bên phải | Không vẽ polygon ở làn kẻ vạch riêng đó (IGNORE); `drivable_area` các làn còn lại, vẽ đủ tới sát mép dưới khung hình ở vùng ngay trước đầu xe | Mục 4, mục 5 |
+| BDD17 | Mưa nhẹ, mặt đường ướt phản chiếu đèn, có đoạn mép đường cong và góc hẹp | `drivable_area` bám sát mép đường theo mật độ điểm tối thiểu ~40px dọc đoạn cong; không làm tròn góc hẹp | Mục 3 |
+| BDD23 | Khu dân cư tuyết mỏng, đường rộng nhiều làn (cả làn ego và nửa đường bên trái) | `drivable_area` phải bao trùm **toàn bộ** bề rộng đường còn nhìn thấy, kể cả nửa đường xa/bên trái — không chỉ vẽ phần gần nhất | Mục 3, mục 4 |
 
 ## 10. Common mistakes
 
@@ -111,3 +121,8 @@ Không áp dụng — task ảnh tĩnh, không dùng Track.
 - Đoán tiếp polygon qua khúc cua bị che khuất hoàn toàn thay vì dừng lại và bật `needs_review`.
 - Không chắc một vùng có phải loại trừ hay không nhưng vẫn tự quyết (vẽ hoặc không vẽ) mà không bật
   `needs_review` — làm mất dấu vết để calibration/QA phát hiện bất đồng.
+- **(v2)** Đường rộng/nhiều làn: chỉ vẽ phần đường gần nhất, bỏ sót nửa đường xa hoặc bên trái — calibration nội
+  bộ đo được IoU 0.42 ở BDD23 do lỗi này (xem `06_calibration_report.csv`).
+- **(v2)** Bỏ sót vùng mặt đường ngay trước đầu xe (foreground) vì nghĩ đó là phần "méo hình" không cần vẽ đủ.
+- **(v2)** Vẽ quá ít điểm dọc theo đoạn cong/quanh chướng ngại vật khiến polygon cắt góc thay vì bám sát mép thật
+  (mục 3 quy định mật độ điểm tối thiểu).
