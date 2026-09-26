@@ -5,8 +5,8 @@
 - **Team:** Thunderbolt (ví dụ `team07`)
 - **Nhóm peer test bài của mình:** TODO (cặp A ↔ B; số nhóm lẻ thì ring 3 nhóm A → B → C → A — Lab Coach công bố)
 - **Nhóm mình test bài của:** TODO
-- **Problem family:** area/drivable, area/alternative (xem README mục "1 · Chọn bài toán")
-- **Nguồn ảnh:** `lisa` (chỉ dùng ảnh trong `data/`)
+- **Problem family:** area/drivable (xem README mục "1 · Chọn bài toán")
+- **Nguồn ảnh:** `bdd100k` (chỉ dùng ảnh trong `data/`)
 
 | Thành viên | GitHub | Vai trò chính | File phụ trách |
 |---|---|---|---|
