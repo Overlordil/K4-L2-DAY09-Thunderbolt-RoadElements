@@ -49,10 +49,10 @@ Nhóm được đổi mapping nếu downstream contract khác, nhưng phải gi�
 
 | Severity | Định nghĩa cho project này | Ví dụ | Action mặc định |
 |---|---|---|---|
-| Critical | TODO | TODO | TODO |
-| Major | TODO | TODO | TODO |
-| Minor | TODO | TODO | TODO |
-| Question | TODO | TODO | TODO |
+| Critical | Annotation làm downstream không thể sử dụng đúng drivable area hoặc làm thay đổi nghiêm trọng semantic của vùng cần label | Bỏ toàn bộ drivable area rõ ràng; polygon nằm hoàn toàn ngoài drivable region | REWORK ngay + review 100% batch |
+| Major | Lỗi làm sai đáng kể phạm vi drivable area nhưng vẫn có thể sửa theo guideline | Bỏ sót một phần lớn drivable area; polygon ăn sang non-drivable region đáng kể; boundary sai rõ ràng | REWORK + kiểm tra mở rộng nếu vượt threshold |
+| Minor | Sai lệch nhỏ về geometry nhưng semantic của drivable area vẫn đúng | Boundary lệch nhẹ trong vùng tolerance; polygon chưa thật sát boundary nhưng vẫn thể hiện đúng vùng | REWORK trước khi PASS |
+| Question | Bằng chứng không đủ hoặc guideline chưa có rule rõ ràng | Không xác định rõ boundary; vùng road bị che mạnh; trường hợp chưa được quy định | ESCALATE => chốt rule => update guideline/version => rework nếu cần |
 
 ## Metrics
 

@@ -28,9 +28,12 @@ placeholder mới là xong (gate G2).
 
 ## CVAT
 
-- **Phiên bản CVAT** (`make cvat-status`): TODO — điền sau khi bật CVAT và chạy lệnh.
-- **Tên task calibration** (ví dụ `thunderbolt-calib-v1`): TODO — điền khi tạo task thật trong CVAT.
-- **Guide của task đã dán `02_guideline.md`?** TODO (có / chưa) — dán theo GUIDE mục 2.3 sau khi tạo task.
+- **Phiên bản CVAT** (`make cvat-status`): 2.75.1
+- **Tên task calibration**: `day09` (task id 27, job id 16) — đặt tên chưa theo quy ước gợi ý
+  `<tên nhóm>-calib-<tên bạn>` của GUIDE.md, nhưng không bắt buộc, chỉ là gợi ý đặt tên dễ tra cứu.
+- **Guide của task đã dán `02_guideline.md`?** **Chưa** — kiểm tra trực tiếp trong CVAT (task id 27 chưa có Guide
+  nào được lưu). Cần vào **Task → Task description → Edit**, dán toàn bộ nội dung `02_guideline.md`, **Submit**
+  (xem GUIDE.md mục 2.3) trước khi coi bước setup là xong.
 - **Nhóm dùng Track hay Shape, vì sao:** Shape — task dùng ảnh tĩnh BDD100K, không có chuỗi frame liên tục nên
   không áp dụng Track (xem mục 8 `02_guideline.md`).
 

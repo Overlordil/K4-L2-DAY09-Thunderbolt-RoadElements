@@ -97,10 +97,10 @@ Không áp dụng — task ảnh tĩnh, không dùng Track.
 
 | sample_id | Thấy gì | Expected output | Rule áp dụng |
 |---|---|---|---|
-| BDD01 | Highway nhiều làn, có ramp thoát bên phải với vùng gạch chéo (gore) | `drivable_area` bao trùm mọi làn cùng chiều còn nhìn thấy; **không** vẽ polygon ở vùng gạch chéo cạnh ramp (IGNORE) | Mục 4, mục 5 |
+| BDD05 | Highway nhiều làn, xe thưa, làn rõ ràng | `drivable_area` bao trùm mọi làn cùng chiều còn nhìn thấy | Mục 3, mục 4 |
 | BDD10 | Đường 2 chiều không dải phân cách, xe đậu 2 bên, có xe ngược chiều đang tới | `drivable_area` bao gồm cả làn ego lẫn làn ngược chiều còn nhìn thấy; không vẽ vào làn đậu xe | Mục 4, mục 5 |
 | BDD11 | Ngã tư khu dân cư, vạch qua đường ngay trước xe, người đi bộ ở góc phải | `drivable_area` bao trùm cả phần vạch qua đường, không tách polygon riêng cho vạch qua đường | Mục 5, mục 6 |
-| BDD13 | Làn giữa có vạch vàng gạch chéo (turn-lane/keep-clear) | Không vẽ polygon ở vùng gạch chéo giữa đường (IGNORE); `drivable_area` hai bên | Mục 4, mục 5 |
+| BDD20 | Khu dân cư, có cọc tiêu và một làn kẻ vạch riêng bên phải | Không vẽ polygon ở làn kẻ vạch riêng đó (IGNORE); `drivable_area` các làn còn lại | Mục 4, mục 5 |
 
 ## 10. Common mistakes
 
