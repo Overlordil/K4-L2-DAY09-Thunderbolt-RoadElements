@@ -1,6 +1,6 @@
 # Annotation guideline — Drivable area trên ảnh BDD100K
 
-**Version:** v2
+**Version:** v3
 
 ## 1. Objective + scope
 
@@ -18,7 +18,10 @@ toàn bộ mặt đường xe có thể lái vào một cách hợp pháp, khôn
 Đơn vị là **ảnh tĩnh** (image), gán nhãn theo **region**, không phải instance đếm được. Mỗi polygon là một vùng
 liên tục thuộc cùng một class. Nếu vùng bị chia thành hai mảng rời nhau bởi vật cản che khuất hoàn toàn ở giữa
 (ví dụ xe tải lớn chắn ngang hết bề rộng), vẽ **hai polygon riêng** — không nối bằng đường tưởng tượng xuyên qua
-vật cản.
+vật cản. **(v3)** Phương tiện giao thông đang di chuyển (xe buýt, xe tải, container, taxi, xe máy, người đi bộ)
+được coi là **dynamic occlusion**, không phải vật cản tĩnh: polygon phải được vẽ xuyên qua theo hướng đường nếu
+đường vẫn còn bằng chứng hình học rõ; chỉ tách polygon khi vật cản là cố định hoặc đủ dài để cắt đường như dải
+phân cách bê tông, rào chắn công trình, đảo giao thông.
 
 ## 3. Geometry rule
 
@@ -70,9 +73,11 @@ nằm ở mục 5 dưới dạng rule văn bản. `needs_review` là attribute v
 
 - **Bị che bởi xe/người đang di chuyển (occlusion tạm thời — dynamic object):** vẫn vẽ polygon xuyên qua như
   đường tiếp tục bình thường, dựa vào bằng chứng hình học hai bên (vạch sơn, mép đường, hướng đường) để suy ra
-  ranh giới hợp lý. Nhãn này biểu diễn mặt đường theo **ngữ nghĩa** (semantic road surface), bỏ qua occlusion
-  tạm thời do giao thông — hệ thống nhận diện xe/người là input riêng biệt (object detection), annotator không
-  cần đoán hình dạng dưới gầm xe, chỉ tiếp tục polygon theo xu hướng đường.
+  ranh giới hợp lý. **(v3)** Điều này áp dụng cho mọi phương tiện đang di chuyển (xe buýt, xe tải, container,
+  taxi, xe máy, người đi bộ): không tách polygon vì đó là occlusion tạm thời, chỉ tách khi vật cản là tĩnh/cố định
+  hoặc khi ranh giới không còn đủ bằng chứng. Nhãn này biểu diễn mặt đường theo **ngữ nghĩa** (semantic road
+  surface), bỏ qua occlusion tạm thời do giao thông — hệ thống nhận diện xe/người là input riêng biệt (object
+  detection), annotator không cần đoán hình dạng dưới gầm xe, chỉ tiếp tục polygon theo xu hướng đường.
 - **Bị che bởi vật thể tĩnh/lâu dài** (cây, cột, rào chắn công trình): theo **visible-extent** — polygon dừng ở
   ranh giới nhìn thấy cuối cùng, không đoán tiếp. Nếu phần còn lại không đủ bằng chứng để suy ra tiếp (ví dụ
   đường cong khuất hẳn sau công trình), dừng polygon và bật `needs_review`.

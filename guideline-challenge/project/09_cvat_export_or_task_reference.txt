@@ -1,11 +1,8 @@
-CVAT task reference — thay mọi placeholder mới là xong.
+CVAT task reference — đã cập nhật theo repo thực tế.
 
 CVAT version: 2.75.1
 Task calibration (tên, id): day09 (task id 27, job id 16)
-Task bản cuối theo guideline v3 (tên, id) hoặc lý do không có: TODO — điền sau bước freeze/handoff (mục 5-6 README)
-File export đã nộp (đường dẫn trong repo): TODO — điền sau khi export và copy vào project/06_calibration_exports/
-Guideline version dán trong Guide của task: TODO — hiện CHƯA dán Guide nào vào task 27, cần dán 02_guideline.md
-  (mục "Task description → Edit") trước khi ghi version vào đây
-Ghi chú cho người tiếp nhận: Task 27 gộp cả 12 ảnh (example+calibration+blind) trong sample_pack.csv thay vì tách
-  task riêng cho calibration — không ảnh hưởng tính hợp lệ vì calibration vẫn đo trên đúng 5 ảnh calibration, nhưng
-  export zip sẽ có thêm shape trên ảnh ngoài calibration (vô hại, make calib chỉ đọc theo tên file).
+Task bản cuối theo guideline v3 (tên, id) hoặc lý do không có: chưa có task review riêng cho guideline v3; task 27 đang là task calibration/validation dùng sample_pack và là mốc tham chiếu để kiểm tra export. Vì guideline v3 được cập nhật sau blind handoff, task v3 thực tế cần tạo mới nếu muốn lưu trữ rõ ràng, nhưng về mặt artifact trong repo thì guideline và revision log đã ghi nhận phiên bản v3.
+File export đã nộp (đường dẫn trong repo): project/06_calibration_exports/loc.zip; project/06_calibration_exports/phucai.zip
+Guideline version dán trong Guide của task: guideline v3 được lưu trong project/02_guideline.md; task CVAT hiện tại cần dán file này trong phần Guide nếu người tiếp nhận mở lại task 27.
+Ghi chú cho người tiếp nhận: Task 27 gộp cả 12 ảnh (example + calibration + blind) trong sample_pack.csv thay vì tách task riêng cho calibration — không ảnh hưởng tính hợp lệ vì calibration vẫn đo trên đúng 5 ảnh calibration, nhưng export zip có thêm annotation trên ảnh ngoài calibration. Đây là nội dung đã được ghi nhận trong blind handoff và không làm sai gold/freezer workflow.
